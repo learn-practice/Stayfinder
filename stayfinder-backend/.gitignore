@@ -1,0 +1,22 @@
+# Environment variables
+.env
+
+# Dependency directories
+node_modules/
+
+# Log files
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build and cache output (if any)
+dist/
+.cache/
+
+# OS and Editor files
+.DS_Store
+.vscode/
+.idea/
