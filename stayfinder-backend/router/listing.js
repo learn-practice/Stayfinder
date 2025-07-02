@@ -7,9 +7,9 @@ const {
   deleteListing,
 } = require("../controller/listing");
 
-const authProtect = require("../middleware/authProtect");
-const isHost = require("../middleware/isHost");
-const isListingOwner = require("../middleware/isListingOwner");
+const authProtect = require("../middlewares/authProtect");
+const isHost = require("../middlewares/isHost");
+const isListingOwner = require("../middlewares/isListingOwner");
 
 const router = express.Router();
 

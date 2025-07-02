@@ -35,6 +35,7 @@ const addListingData = async (req, res) => {
       pricePerNight,
       images,
       guests,
+      bedrooms,
       bathrooms,
       amenities,
       availableDates,
@@ -67,8 +68,29 @@ const addListingData = async (req, res) => {
 // PUT /listings/:id
 const updateListing = async (req, res) => {
   try {
+    // testing
+    // console.log("updateListing function called");
+
     const listingId = req.params.id;
     const updatedData = req.body;
+    // testing
+    // console.log("listing", listingId);
+    // console.log("updatedData", updatedData);
+    // console.log("User:", req.user); // check if this is undefined
+    const existingListing = await listing.findById(req.params.id);
+    // testing
+    // console.log("Listing host:", existingListing.host); // should be an ObjectId
+    if (existingListing) {
+      console.log(existingListing.title);
+    }
+    if (
+      !req.user ||
+      req.user._id.toString() !== existingListing.host.toString()
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to update this listing" });
+    }
 
     const updatedListing = await listing.findByIdAndUpdate(
       listingId,
@@ -79,17 +101,12 @@ const updateListing = async (req, res) => {
       }
     );
 
-    if (!updatedListing) {
-      return res.status(404).json({ message: "Listing not found" });
-    }
-
     res.status(200).json({ message: "Listing updated", data: updatedListing });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "server not found", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 // DELETE /listings/:id
 const deleteListing = async (req, res) => {
   try {

@@ -1,6 +1,6 @@
 // middleware/isListingOwner.js
 
-const Listing = require("../models/Listing");
+const Listing = require("../model/listing");
 
 const isListingOwner = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ const isListingOwner = async (req, res, next) => {
       return res.status(404).json({ message: "Listing not found." });
     }
 
-    if (listing.owner.toString() !== req.user._id.toString()) {
+    if (listing.host.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ message: "Access denied: You do not own this listing." });

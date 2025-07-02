@@ -1,16 +1,22 @@
 const Booking = require("../model/booking");
+const listing = require("../model/listing");
+
 //book listing
 const bookingList = async (req, res) => {
   try {
     const { listingId, checkIn, checkOut, guests, totalPrice, status } =
       req.body;
-    const listing = await Listing.findById(listingId);
-    if (!listing) {
+    console.log("id", listingId);
+
+    const listingdata = await listing.findById(listingId);
+    console.log("listing data", listingdata._id);
+
+    if (!listingdata) {
       return res.status(404).json({ message: "Listing not found" });
     }
     const newBooking = await Booking.create({
       user: req.user._id,
-      listing: listing._id,
+      listingId: listingdata._id,
       checkIn,
       checkOut,
       guests,
@@ -30,7 +36,7 @@ const bookingList = async (req, res) => {
 const currentBookingList = async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.user._id })
-      .populate("listing", "title pricePerNight images address")
+      .populate("listingId", "title pricePerNight images address")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({ bookings });
