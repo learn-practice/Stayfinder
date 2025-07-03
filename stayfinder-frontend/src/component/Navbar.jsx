@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
-import { HiMenu, HiX } from "react-icons/hi"; // Icons for menu toggle
+import { HiMenu, HiX } from "react-icons/hi";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
-  const [logged, setLogged] = useState(false);
+  const [logged, setLogged] = useState(true); // change to false to simulate not logged in
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    setLogged(false);
+    setProfileMenuOpen(false);
+    // Add logout logic here
+  };
 
   return (
     <>
-      <nav className="bg-white text-[#7A316F] font-serif ">
+      <nav className="bg-white text-[#7A316F] font-serif relative z-50">
         <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4">
           {/* Logo */}
           <div className="flex items-center">
             <Link to={"/"}>
               <img
-                src="./logo.png"
+                src="/logo.png"
                 alt="logo"
                 className="w-[50px] rounded-full"
               />
@@ -28,11 +36,34 @@ const Navbar = () => {
             <Link to={"/property"}>Property</Link>
             <Link to={"/service"}>Service</Link>
           </div>
-          <div className="hidden md:flex text-xl font-semibold justify-between items-center">
+
+          {/* Right side buttons */}
+          <div className="hidden md:flex items-center text-xl font-semibold gap-4 relative">
             {!logged ? (
               <Link to={"/login"}>Login</Link>
             ) : (
-              <Link to={"/signup"}>SignUp</Link>
+              <div className="relative">
+                <button onClick={() => setProfileMenuOpen(!profileMenuOpen)}>
+                  <FaUserCircle className="text-3xl text-[#7A316F]" />
+                </button>
+                {profileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-md py-2 z-10">
+                    <Link
+                      to="/dashboard"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -68,9 +99,17 @@ const Navbar = () => {
                 Login
               </Link>
             ) : (
-              <Link to={"/signup"} onClick={() => setMenuOpen(false)}>
-                SignUp
-              </Link>
+              <>
+                <Link
+                  to={"/dashboard/profile"}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <button onClick={handleLogout} className="text-left">
+                  Logout
+                </button>
+              </>
             )}
           </div>
         )}

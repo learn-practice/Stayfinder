@@ -1,9 +1,16 @@
 import React from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const PropertyCard = () => {
+  const navigate = useNavigate();
+  const navigateto = () => {
+    // window.location.href = "/property/:id";  //page reload using this 
+    // better way to use navigate 
+    navigate('/property/:id')
+  };
   return (
-    <div className="flex justify-start w-full p-5">
+    <div className="flex justify-start w-full p-3" onClick={navigateto}>
       <div className="flex flex-col w-[200px]">
         {/* Image with Heart Icon */}
         <div className="relative">
